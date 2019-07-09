@@ -1,6 +1,26 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
+    match /Users/{userid} {
+      allow read;
+      allow write: if request.auth.uid == userid;
+    }    
+    match /Experts/{userid} {
+      allow read;
+      allow write;
+    }
+    match /Skills/{userid} {
+      allow read, write;
+    }
+    match /TopSkills/{userid} {
+      allow read, write;
+    }
+    match /Interactions/{userid} {
+      allow read, write;
+    }
+    match /Feedback/{userid} {
+      allow read, write;
+    }
+    match /Categories/{userid} {
       allow read, write;
     }
   }
