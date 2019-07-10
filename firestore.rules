@@ -6,12 +6,9 @@ service cloud.firestore {
     }    
     match /Experts/{userid} {
       allow read;
-      allow write;
+      allow write: if request.auth.uid == userid;
     }
     match /Skills/{userid} {
-      allow read, write;
-    }
-    match /TopSkills/{userid} {
       allow read, write;
     }
     match /Interactions/{userid} {
