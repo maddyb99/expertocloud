@@ -36,27 +36,47 @@ export const onUserDelete =functions.auth.user().onDelete((user,context)=>{
 
 export const onInteraction = functions.firestore.document('Interactions/{doc}').onCreate((snap,context)=>{
     const newValue = snap.data();
-    console.log(newValue);
+    const time=admin.firestore.Timestamp.now();
     let val;
     if(newValue){
         const user = admin.firestore().doc('Users/'+newValue.user);
         const expert = admin.firestore().doc('Experts/'+newValue.expert);
-        const interactions=admin.firestore().collection("Interactions").get();
-        interactions.then(function(q: any){
-            console.log(q);
-            val= snap.ref.set({
-                interactionTime: admin.firestore.FieldValue.arrayUnion(admin.firestore.Timestamp.now()),
-                id: q.size-1,
-            },{merge: true}).then(function(){
+        const interactions=admin.firestore().collection("Interactions").where('user','==',newValue.user).where('expert','==',newValue.expert).get();
+        interactions.then(function(q:any){
+            if(q.size>1)
+            {
+                console.log("Already exists");
+                q.forEach(function(element: any) {
+                    if(element.id!==snap.id)
+                        element.ref.set({
+                            interactionTime: admin.firestore.FieldValue.arrayUnion(time)
+                        },{merge:true});
+                });
+                val=snap.ref.delete();
                 console.log("done");
-                user.update({
-                    interactionID: admin.firestore.FieldValue.arrayUnion(q.size-1)
+            }
+            else
+            {
+                console.log("doesnt exist");
+                const interactions2=admin.firestore().collection("Interactions").get();
+                interactions2.then(function(qu: any){
+                    console.log(qu);
+                    val= snap.ref.set({
+                        interactionTime: admin.firestore.FieldValue.arrayUnion(time),
+                        id: qu.size-1,
+                    },{merge: true}).then(function(){
+                        user.update({
+                            interactionID: admin.firestore.FieldValue.arrayUnion(qu.size-1)
+                        });
+                        expert.update({
+                            interactionID: admin.firestore.FieldValue.arrayUnion(qu.size-1)
+                        });
+                    });
                 });
-                expert.update({
-                    interactionID: admin.firestore.FieldValue.arrayUnion(q.size-1)
-                });
-            });
-        })
+                console.log("done");
+            }
+        });
+        
         
     }
     return val;
