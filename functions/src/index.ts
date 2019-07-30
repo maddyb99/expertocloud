@@ -81,3 +81,99 @@ export const onInteraction = functions.firestore.document('Interactions/{doc}').
     }
     return val;
 })
+
+// export const keywords =functions.https.onRequest((request,response)=>{
+//     const skills=admin.firestore().collection("Skills").get();
+//     skills.then(function(skill:any){
+//         console.log(skill.size);
+//         skill.forEach(function(skil:any){
+//             let list;
+//             console.log(skil.data()["Name"]);
+//             if("Brand Awareness".localeCompare(skil.data()["Name"])===0)
+//             {
+//                 list=[
+//                     "Fashion",
+//                     "Wear",
+//                     "Confused",
+//                     "Look",
+//                     "Style",
+//                     "Stylish",
+//                     "beautiful",
+//                     "pretty",
+//                     "Color",
+//                     "Design",
+//                     "Brand",
+//                     "Store",
+//                     "Local",
+//                     "Company",
+//                     "Touchup",
+//                 ];
+//             }
+//             else if("General Awareness".localeCompare(skil.data()["Name"])===0)
+//             {
+//                 list=[
+//                     "Polity",
+//                     "biology",
+//                     "Physics",
+//                     "Indian History",
+//                     "Rajasthan History",
+//                     "Environment",
+//                     "Economy",
+//                     "Computer",
+//                     "Disease",
+//                     "Pollution",
+//                     "Nutrition",
+//                     "Current Affairs",
+//                     "Dates",
+//                     "Portfolio",
+//                     "Sports",
+//                     "News",
+//                 ];
+//             }
+//             else if("Interior Design".localeCompare(skil.data()["Name"])===0)
+//             {
+//                 list=[
+//                     "Architecture",
+//                     "Shelter",
+//                     "Stair",
+//                     "interior",
+//                     "paint",
+//                     "Design",
+//                     "Table",
+//                     "garden",
+//                 ];
+//             }
+//             else if("Technical (JE Civil)".localeCompare(skil.data()["Name"])===0)
+//             {
+//                 list=[
+//                     "Junior engineer",
+//                     "engineer",
+//                     "gate",
+//                     "psu",
+//                     "civil",
+//                     "material",
+//                     "BMC",
+//                     "Soil",
+//                     "Foundation",
+//                     "Hydrology",
+//                     "irrigation",
+//                     "Highway",
+//                     "Environment",
+//                 ];
+//             }
+//             console.log(list);
+//             let i=0;
+//             // tslint:disable-next-line: triple-equals
+//             if(list!=null&&list.length>=0)
+//             {
+//             list.forEach(function(word:String){
+//                 list[i]=word.toLowerCase();
+//                 i++;
+//             });
+//             skil.ref.set({Keywords:list},{merge:true});
+//         }
+//         });
+//     })
+//     response.send("done");
+//     return;
+// })
